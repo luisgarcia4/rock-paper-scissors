@@ -1,0 +1,1 @@
+This was my initial attempt at The Odin Project's "Rock Paper Scissors" project. The javascript chapter dealt with conditional statements and functions. The appliction works through the alert window and results are recorded under the console log.

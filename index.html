@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Rock Paper Scissors: Javascript Project</title>
+	</head>
+	<body>
+		<script>
+			computerPoints = 0;
+			playerPoints = 0;
+
+			function playRound(playerSelection, computerSelection) {
+				// This whole function plays 1 round of "Rock, Paper, Scissors"
+
+				const computerChoices = ["Rock", "Paper", "Scissors"]; // I created a list of choices that the computer can look through
+
+				function computerPlay() {
+					return computerChoices[Math.floor(Math.random() * computerChoices.length)];
+				}
+
+				computerSelection = computerPlay();
+
+				/* EXPLANATION FOR computerPlay() FUCNTION AND computerSelection PARAMETER
+        This function called computerPlay() calls the array computerChoices and passes the Math.random function through it.
+        Since Math.random generates a random number between 0 and 1 (which is a decimal), we multiply it by the amount of choices
+        we have in the array which are 3. We can easily just multiply it by 3, but can also multiply it by the length of the array
+        which spits out 3 as well (either way works). Now, because the random number is a decimal, we use Math.floor to round that
+        number down to a whole number. In other words, everytime the function computerPlay() is called, it will generate a random number
+        between 0 and 1 then multiply that number by the length of the array and finally round down to a whole number. That number will
+        be used inside the brackets acting as the index number that will tell the computer what index value in the array to look for.
+        It's important to note that JavaScript starts indexing at 0. It is also important to note that the Math.random function
+        quite never spits out 1 so everytime the computer rounds down we obtain either index 0, 1, or 2. Furthermore, I reassigned
+        the function computerPlay() to a new variable computerSelection which I then pass as a parameter in the parent function
+        playRound(). */
+
+				playerSelection = prompt("Rock, Paper, or Scissors: ");
+
+				function caseInsensitive() {
+					playerSelection = playerSelection.toLowerCase();
+					return playerSelection;
+				}
+
+				playerSelection = caseInsensitive();
+
+				/* EXPLANATION FOR playerSelection() PARAMETER
+        One of the requirements on The Odin Project was to make the user input case insensitive. I used the fucntion caseInsensitive()
+        to convert the user input into lower case in order to facilitate comparison later in the CONDITIONAL STATEMENTS. Lastly, I
+        reassigned the value of playerSelection to be equal to the function caseInsensitive. This second/later value of playerSelection
+        is the first parameter of the parent playRound() function */
+
+				// CONDITIONAL STATEMENTS
+				if (playerSelection == "rock" && computerSelection == "Paper") {
+					computerPoints += 1;
+					return "You lose! Paper beats Rock ";
+				} else if (playerSelection == "rock" && computerSelection == "Scissors") {
+					playerPoints += 1;
+					return "You win! Rock beats Scissors ";
+				} else if (playerSelection == "paper" && computerSelection == "Rock") {
+					playerPoints += 1;
+					return "You win! Paper beats Rock";
+				} else if (playerSelection == "paper" && computerSelection == "Scissors") {
+					computerPoints += 1;
+					return "You lose! Scissors beats Paper ";
+				} else if (playerSelection == "scissors" && computerSelection == "Paper") {
+					playerPoints += 1;
+					return "You win! Scissors beats Paper ";
+				} else if (playerSelection == "scissors" && computerSelection == "Rock") {
+					computerPoints += 1;
+					return "You lose! Rock beats Scissors ";
+				} else if (playerSelection == "rock" && computerSelection == "Rock") {
+					return "You both chose Rock. You tied. ";
+				} else if (playerSelection == "paper" && computerSelection == "Paper") {
+					return "You both chose Paper. You tied. ";
+				} else if (playerSelection == "scissors" && computerSelection == "Scissors") {
+					return "You both chose Scissors. You tied. ";
+				} else {
+					return "That is not one of your choices ";
+				}
+
+				/* EXPLANATION FOR CONDITIONAL STATEMENTS
+        In this block of code I am simply comparing possible pair of outcomes and declaring a winner based on that specific pair.
+        The else statement prevents the user from entering something that is not a choice (ex. Rock, Paper, or Scissors).
+        */
+			} // This swivel brakcet closes playRound() function.
+
+			function game() {
+				for (let i = 1; i <= 5; i++) {
+					console.log(playRound());
+				}
+			}
+
+			function score() {
+				if (playerPoints > computerPoints) {
+					console.log(
+						`Congratulations! You have defeated the computer. \nThe score is ${playerPoints} to ${computerPoints}.`
+					);
+				} else if (playerPoints < computerPoints) {
+					console.log(
+						`The mission was failed. Better luck next time. \nThe score is ${playerPoints} to ${computerPoints}.`
+					);
+				} else {
+					console.log(
+						`For some odd reason you have tied. \nThe score is ${playerPoints} to ${computerPoints}.`
+					);
+				}
+			}
+
+			// This game() function uses a for loop to iterate through 5 rounds of the playRound() function and logs them in the console
+			// as per The Odin Project instructions
+
+			game(); // Invoking game() function. This function wasn't working before because I wasn't calling it
+
+			score();
+			/* I spent at least 2 hours trying to get the score to work but everytime I console.log(ed) the score it kept giving me zero.
+      I initially though that it had to do with scope. I thought that because computerPoints and playerPoints were being added inside the 
+      playRound() function, that the local scope was preventing me from obtaining the updated values whenever I'd console.log(computerPoints) 
+      (for example). This led me to believe that everytime I console logged computerPoints or playerPoints in the global scope, I would get 0
+      because it was taking the values from the variable declaration at the beginning of the code. This was partially true. The main issue,
+      however, was that I placed the 'computerPoints +=1' and 'playerPoints += 1' (the lines of code in the CONDITIONAL STATEMENT that are
+      supposed to keep track of the score) under the return statement (in each of their conditions respectively). The most important/crucial
+      part that I didnt take into consideration is that is that whenever the 'return' keyword is invoked, the code inside that block stops 
+      running. This prevented the part of the conditional statement that added points depending on the winner to not even be reached. I then 
+      try to put 2 return statements (one for the string and a second one for the score) inside one conditional block but since the first one 
+      always ran the second one would get ignored. I then tried switching the position of the return statements and that is when I started 
+      getting actual scores back but this time with no string indicating the winner/loser. After the realization of what was going on I realized
+      I had to place the line of code keeping track of the score before the return statement (string) as well as get rid of the return keyword 
+      for the line of code keeping track of the score. I then proceeded to console.log(computerPoints) and console.log(playerPoints) the scores 
+      once again to test if the code was working and VOILA it worked. The most important thing I learned from this excersise of keeping score
+      was that a return statement stops the code in the block in which it is called. Everything else after it will get ignored. 
+      */
+		</script>
+	</body>
+</html>
